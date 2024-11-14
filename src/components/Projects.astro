@@ -60,7 +60,7 @@ const PROJECTS = [
           <ul class="flex flex-row mb-2 gap-x-2">
             {/* Check if tags is defined before mapping */}
             {tags && tags.map((tag) => (
-              <li key={tag.name}>  {/* Added key to help React with re-renders */}
+              <li>  {/* Removed the key here */}
                 <span class={`flex gap-x-2 rounded-full text-xs ${tag.class} py-1 px-2`}>
                   <tag.icon class="size-4" />
                   {tag.name}
