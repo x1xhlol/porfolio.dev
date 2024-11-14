@@ -35,11 +35,11 @@ const THEMES = ["Light", "Dark"]
     </ul>
   </div>
 
-  <!-- Pop-up Notification -->
-  <div id="popup" class="popup hidden">
-    <div class="popup-content p-6 bg-gray-700 text-white rounded-lg shadow-lg">
+  <!-- No message for Sun theme -->
+  <div id="no-message" class="no-message hidden">
+    <div class="no-message-content p-6 bg-gray-700 text-white rounded-lg shadow-lg">
       <p class="text-lg">¡No! El modo Sol (Light) es un desastre 😂</p>
-      <button id="popup-close" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Ok</button>
+      <button id="no-message-close" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Ok</button>
     </div>
   </div>
 </div>
@@ -62,22 +62,22 @@ const THEMES = ["Light", "Dark"]
     }
   }
 
-  /* Pop-up Styling */
-  .popup {
+  /* No Message Styling */
+  .no-message {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.4); /* Slightly dark background */
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Ensures the popup is above the content */
+    z-index: 9999; /* Ensures the message is above everything */
     animation: fadeIn 0.3s ease-out;
   }
 
-  .popup-content {
+  .no-message-content {
     max-width: 400px;
     width: 80%;
     text-align: center;
@@ -85,14 +85,14 @@ const THEMES = ["Light", "Dark"]
     background-color: #333; /* Dark background to make the text visible */
     border-radius: 8px;
     animation: pop-up 0.3s ease-out;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); /* Adds shadow to the popup */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); /* Adds shadow to the message */
   }
 
-  .popup.hidden {
+  .no-message.hidden {
     display: none;
   }
 
-  .popup.visible {
+  .no-message.visible {
     display: flex;
   }
 
@@ -115,24 +115,14 @@ const THEMES = ["Light", "Dark"]
       opacity: 1;
     }
   }
-
-  /* Adding a slight blur effect to the background */
-  body.blur {
-    filter: blur(4px);
-  }
-
-  /* Adjusting transition for better performance */
-  .transition-all {
-    transition: all 0.3s ease;
-  }
 </style>
 
 <script is:inline>
   let remove = null
   const matchMedia = window.matchMedia("(prefers-color-scheme: dark)")
   const themesMenu = document.getElementById("themes-menu")
-  const popup = document.getElementById("popup")
-  const popupClose = document.getElementById("popup-close")
+  const noMessage = document.getElementById("no-message")
+  const noMessageClose = document.getElementById("no-message-close")
 
   const getThemePreference = () => {
     if (typeof localStorage !== "undefined") {
@@ -181,10 +171,9 @@ const THEMES = ["Light", "Dark"]
     element.addEventListener("click", (e) => {
       const selectedTheme = e.target.innerText.toLowerCase().trim()
       if (selectedTheme === "light") {
-        // Display the "No" pop-up when selecting Light mode
-        popup.classList.remove("hidden")
-        popup.classList.add("visible")
-        document.body.classList.add("blur") // Add blur effect to the background
+        // Display the "No" message when selecting Light mode
+        noMessage.classList.remove("hidden")
+        noMessage.classList.add("visible")
       } else {
         localStorage.setItem("theme", selectedTheme)
         updateTheme()
@@ -192,10 +181,9 @@ const THEMES = ["Light", "Dark"]
     })
   })
 
-  popupClose.addEventListener("click", () => {
-    popup.classList.remove("visible")
-    popup.classList.add("hidden")
-    document.body.classList.remove("blur") // Remove blur effect when the pop-up is closed
+  noMessageClose.addEventListener("click", () => {
+    noMessage.classList.remove("visible")
+    noMessage.classList.add("hidden")
   })
 
   document.addEventListener('astro:after-swap', () => {
