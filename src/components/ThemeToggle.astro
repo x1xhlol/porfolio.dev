@@ -122,6 +122,7 @@ let currentTheme = getThemePreference(); // Get initial theme from localStorage 
   const themesMenu = document.getElementById("themes-menu")
   const okButton = document.getElementById("ok-btn")
 
+  // Define getThemePreference function
   const getThemePreference = () => {
     if (typeof localStorage !== "undefined") {
       return localStorage.getItem("theme") ?? "system"
