@@ -43,11 +43,12 @@ const PROJECTS = [
 ---
 
 <div class="flex flex-col gap-y-16">
-  {PROJECTS.map(({ image, title, description, tags, link }) => (
+  {
+    PROJECTS.map(({ image, title, description, tags, link }) => (
     <article class="flex flex-col space-x-0 space-y-8 group md:flex-row md:space-x-8 md:space-y-0">
       <div class="w-full md:w-1/2">
         <div class="relative flex flex-col items-center col-span-6 row-span-5 gap-8 transition duration-500 ease-in-out transform shadow-xl overflow-clip rounded-xl sm:rounded-xl md:group-hover:-translate-y-1 md:group-hover:shadow-2xl lg:border lg:border-gray-800 lg:hover:border-gray-700 lg:hover:bg-gray-800/50">
-          <img alt={title} class="object-cover object-top w-full h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105" loading="lazy" src={image} />
+          <img alt="Proyectos a 14/11/2024" class="object-cover object-top w-full h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105" loading="lazy" src={image} />
         </div>
       </div>
 
@@ -55,32 +56,34 @@ const PROJECTS = [
         <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
           {title}
         </h3>
-
-        {/* Optional Description */}
-        {description && <p class="text-sm text-gray-600 dark:text-gray-400">{description}</p>}
-
         <div class="flex flex-wrap mt-2">
           <ul class="flex flex-row mb-2 gap-x-2">
-            {tags && tags.map((tag, index) => (
-              // Remove the `key` from the `<li>` tag
-              <li class="flex gap-x-2 rounded-full text-xs py-1 px-2">
-                <tag.icon class="size-4" />
-                {tag.name}
+            {tags.map((tag) => (
+              <li>
+                <span
+                  class={`flex gap-x-2 rounded-full text-xs ${tag.class} py-1 px-2 `}
+                >
+                  <tag.icon class="size-4" />
+                  {tag.name}
+                </span>
               </li>
             ))}
           </ul>
 
-          {link && (
-            <LinkButton href={link}>
-              <Link class="size-4" />
-              Preview
-            </LinkButton>
-          )}
+          <div class="mt-2 text-gray-700 dark:text-gray-400">{description}</div>
+          <footer class="flex items-end justify-start mt-4 gap-x-4">
+            {link && (
+              <LinkButton href={link}>
+                <Link class="size-4" />
+                Preview
+              </LinkButton>
+            )}
+          </footer>
         </div>
       </div>
     </article>
-  ))}
+    ))
+  }
 </div>
-
 
 
