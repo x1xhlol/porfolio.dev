@@ -105,19 +105,23 @@ let currentTheme = "dark"; // Default theme is set to "dark"
 </style>
 
 <script>
-  // Optionally add any JS logic you need to control theme switching or interactions here
+  // Ensure that elements exist before manipulating them
   const okButton = document.getElementById("ok-btn");
   const themesMenu = document.getElementById("themes-menu");
+  const themeToggleButton = document.getElementById("theme-toggle-btn");
 
-  if (currentTheme === "light") {
-    okButton.classList.add("show");
-    okButton.addEventListener("click", () => {
-      window.location.href = "/"; // Navigate to the main page
+  if (okButton && themesMenu && themeToggleButton) {
+    // Check if currentTheme is "light", then show the OK button
+    if (currentTheme === "light") {
+      okButton.classList.add("show");
+      okButton.addEventListener("click", () => {
+        window.location.href = "/"; // Navigate to the main page
+      });
+    }
+
+    // Toggle the themes menu when the button is clicked
+    themeToggleButton.addEventListener("click", () => {
+      themesMenu.classList.toggle("open");
     });
   }
-
-  // Toggle the themes menu when the button is clicked
-  document.getElementById("theme-toggle-btn").addEventListener("click", () => {
-    themesMenu.classList.toggle("open");
-  });
 </script>
