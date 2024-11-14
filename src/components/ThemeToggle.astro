@@ -3,56 +3,65 @@ import SunIcon from "./icons/Sun.astro"
 import MoonIcon from "./icons/Moon.astro"
 import SystemIcon from "./icons/System.astro"
 
-// Default theme is set to dark
-let currentTheme = "dark";
+// Set default theme to dark
+let currentTheme = "dark"; // Default to dark theme
+let isMenuOpen = false;
 const THEMES = ["Light", "Dark", "System"];
 ---
 
 <div class="relative ml-1 mr-1">
   <button
-    transition:persist
     id="theme-toggle-btn"
     class="appearance-none border-none flex hover:scale-125 transition"
+    on:click={() => toggleMenu()}
   >
-    <span class="sr-only">Elige el tema</span>
+    <span class="sr-only">Choose theme</span>
     {currentTheme === "light" ? (
-      <div class="no-theme-rectangle">No.</div> <!-- Fun "No" animation when Light is selected -->
-    ) : (
       <SunIcon id="light" class="theme-toggle-icon size-5 transition-all" />
+    ) : (
+      <MoonIcon id="dark" class="theme-toggle-icon size-5 transition-all" />
     )}
-    <MoonIcon
-      id="dark"
-      class="theme-toggle-icon absolute size-5 transition-all"
-    />
     <SystemIcon
       id="system"
       class="theme-toggle-icon absolute size-5 transition-all"
     />
   </button>
   <div
-    transition:persist
     id="themes-menu"
-    class="absolute hidden scale-80 top-8 right-0 text-sm p-1 min-w-[8rem] rounded-md border border-gray-100 bg-white/90 dark:bg-gray-900/90 dark:border-gray-500/20 shadow-[0_3px_10px_rgb(0,0,0,0.2)] backdrop-blur-md"
+    class={`absolute ${isMenuOpen ? 'scale-100' : 'scale-80'} top-8 right-0 text-sm p-1 min-w-[8rem] rounded-md border border-gray-100 bg-white/90 dark:bg-gray-900/90 dark:border-gray-500/20 shadow-[0_3px_10px_rgb(0,0,0,0.2)] backdrop-blur-md transition-all`}
   >
     <ul>
-      {
-        THEMES.map((theme) => (
-          <li class="themes-menu-option px-2 py-1.5 cursor-default hover:bg-neutral-400/40 dark:hover:bg-gray-500/50 rounded-sm">
-            {theme}
-          </li>
-        ))
-      }
+      {THEMES.map((theme) => (
+        <li
+          class="themes-menu-option px-2 py-1.5 cursor-pointer hover:bg-neutral-400/40 dark:hover:bg-gray-500/50 rounded-sm"
+          on:click={() => changeTheme(theme)}
+        >
+          {theme}
+        </li>
+      ))}
     </ul>
-    <button id="ok-btn" class="ok-button px-4 py-2 mt-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all hidden">
+    <button
+      id="ok-btn"
+      class="ok-button px-4 py-2 mt-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all hidden"
+      on:click={() => toggleMenu()}
+    >
       OK
     </button>
   </div>
 </div>
 
 <style>
+  #themes-menu {
+    display: none;
+  }
+
   #themes-menu.open {
-    display: inline;
+    display: block;
     animation: scale-up-center 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+
+  .theme-toggle-icon {
+    transition: transform 0.3s ease;
   }
 
   @keyframes scale-up-center {
@@ -66,32 +75,6 @@ const THEMES = ["Light", "Dark", "System"];
     }
   }
 
-  .no-theme-rectangle {
-    width: 50px;
-    height: 50px;
-    background-color: #ffcc00;
-    color: #000;
-    font-weight: bold;
-    text-align: center;
-    line-height: 50px;
-    border-radius: 8px;
-    animation: shake 1s ease-in-out infinite, showText 1s forwards;
-    font-size: 1.25rem;
-  }
-
-  @keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
-  }
-
-  @keyframes showText {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
-
   .ok-button {
     display: none;
     width: 100%;
@@ -103,29 +86,33 @@ const THEMES = ["Light", "Dark", "System"];
   .ok-button.show {
     display: block;
   }
+
+  .themes-menu-option {
+    cursor: pointer;
+  }
 </style>
 
 <script>
-  // Ensure that elements exist before manipulating them
-  const okButton = document.getElementById("ok-btn");
-  const themesMenu = document.getElementById("themes-menu");
-  const themeToggleButton = document.getElementById("theme-toggle-btn");
+  // Initialize the menu state and the current theme
+  let isMenuOpen = false;
+  let currentTheme = localStorage.getItem('theme') || 'dark'; // Get saved theme or default to dark
+  
+  // Apply the theme on page load
+  document.body.classList.add(currentTheme);
 
-  // Define default theme if necessary
-  let currentTheme = "dark"; // Default theme is dark
+  function toggleMenu() {
+    isMenuOpen = !isMenuOpen;
+  }
 
-  if (okButton && themesMenu && themeToggleButton) {
-    // Check if currentTheme is "light", then show the OK button
-    if (currentTheme === "light") {
-      okButton.classList.add("show");
-      okButton.addEventListener("click", () => {
-        window.location.href = "/"; // Navigate to the main page
-      });
-    }
-
-    // Toggle the themes menu when the button is clicked
-    themeToggleButton.addEventListener("click", () => {
-      themesMenu.classList.toggle("open");
-    });
+  function changeTheme(theme) {
+    currentTheme = theme.toLowerCase(); // Update the theme based on selection
+    localStorage.setItem('theme', currentTheme); // Save to localStorage
+    
+    // Apply the selected theme to the body
+    document.body.classList.remove('light', 'dark');
+    document.body.classList.add(currentTheme);
+    
+    // Close the theme menu
+    isMenuOpen = false;
   }
 </script>
