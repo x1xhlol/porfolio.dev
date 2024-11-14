@@ -4,7 +4,7 @@ import MoonIcon from "./icons/Moon.astro"
 import SystemIcon from "./icons/System.astro"
 
 const THEMES = ["Light", "Dark", "System"]
-let currentTheme = getThemePreference(); // Get initial theme from localStorage or system preference
+let currentTheme = "light"; // We'll default to "light" until we get the user preference
 ---
 
 <div class="relative ml-1 mr-1">
@@ -117,44 +117,44 @@ let currentTheme = getThemePreference(); // Get initial theme from localStorage 
 </style>
 
 <script is:inline>
-  let remove = null
-  const matchMedia = window.matchMedia("(prefers-color-scheme: dark)")
-  const themesMenu = document.getElementById("themes-menu")
-  const okButton = document.getElementById("ok-btn")
+  let remove = null;
+  const matchMedia = window.matchMedia("(prefers-color-scheme: dark)");
+  const themesMenu = document.getElementById("themes-menu");
+  const okButton = document.getElementById("ok-btn");
 
-  // Define getThemePreference function
+  // Define getThemePreference function here
   const getThemePreference = () => {
     if (typeof localStorage !== "undefined") {
-      return localStorage.getItem("theme") ?? "system"
+      return localStorage.getItem("theme") ?? "system";
     }
 
     return window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
-      : "light"
-  }
+      : "light";
+  };
 
   const updateIcon = (themePreference) => {
     document.querySelectorAll(".theme-toggle-icon").forEach((element) => {
-      element.style.scale = element.id === themePreference ? "1" : "0"
-    })
-  }
+      element.style.scale = element.id === themePreference ? "1" : "0";
+    });
+  };
 
   const updateTheme = () => {
     if (remove != null) {
-      remove()
+      remove();
     }
-    matchMedia.addEventListener("change", updateTheme)
+    matchMedia.addEventListener("change", updateTheme);
     remove = () => {
-      matchMedia.removeEventListener("change", updateTheme)
-    }
+      matchMedia.removeEventListener("change", updateTheme);
+    };
 
-    const themePreference = getThemePreference()
+    const themePreference = getThemePreference();
     const isDark =
       themePreference === "dark" ||
-      (themePreference === "system" && matchMedia.matches)
+      (themePreference === "system" && matchMedia.matches);
 
-    updateIcon(themePreference)
-    document.documentElement.classList[isDark ? "add" : "remove"]("dark")
+    updateIcon(themePreference);
+    document.documentElement.classList[isDark ? "add" : "remove"]("dark");
 
     // Update the current theme variable when theme changes
     currentTheme = themePreference;
@@ -165,21 +165,21 @@ let currentTheme = getThemePreference(); // Get initial theme from localStorage 
     } else {
       okButton.classList.add("hidden");
     }
-  }
+  };
 
-  updateTheme()
+  updateTheme();
 
-  document.addEventListener("click", () => themesMenu.classList.remove("open"))
+  document.addEventListener("click", () => themesMenu.classList.remove("open"));
 
   document.getElementById("theme-toggle-btn").addEventListener("click", (e) => {
-    e.stopPropagation()
-    const isClosed = !themesMenu.classList.contains("open")
-    themesMenu.classList[isClosed ? "add" : "remove"]("open")
-  })
+    e.stopPropagation();
+    const isClosed = !themesMenu.classList.contains("open");
+    themesMenu.classList[isClosed ? "add" : "remove"]("open");
+  });
 
   // Handle the OK button click event
   okButton.addEventListener("click", () => {
     // Redirect to the main page (replace with actual redirection logic)
     window.location.href = "/"; // or use routing logic if in a SPA
-  })
+  });
 </script>
