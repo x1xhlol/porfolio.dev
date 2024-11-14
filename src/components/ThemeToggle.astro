@@ -4,6 +4,7 @@ import MoonIcon from "./icons/Moon.astro"
 import SystemIcon from "./icons/System.astro"
 
 const THEMES = ["Light", "Dark", "System"]
+let currentTheme = getThemePreference(); // Get initial theme from localStorage or system preference
 ---
 
 <div class="relative ml-1 mr-1">
@@ -13,7 +14,12 @@ const THEMES = ["Light", "Dark", "System"]
     class="appearance-none border-none flex hover:scale-125 transition"
   >
     <span class="sr-only">Elige el tema</span>
-    <SunIcon id="light" class="theme-toggle-icon size-5 transition-all" />
+    <!-- Conditional Rendering based on Theme -->
+    {currentTheme === "light" ? (
+      <div class="no-theme-rectangle">No.</div> // Fun "No" animation when Light is selected
+    ) : (
+      <SunIcon id="light" class="theme-toggle-icon size-5 transition-all" />
+    )}
     <MoonIcon
       id="dark"
       class="theme-toggle-icon absolute size-5 transition-all"
@@ -37,6 +43,10 @@ const THEMES = ["Light", "Dark", "System"]
         ))
       }
     </ul>
+    <!-- OK Button to go to the main page (only when "No" is shown) -->
+    <button id="ok-btn" class="ok-button px-4 py-2 mt-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all hidden">
+      OK
+    </button>
   </div>
 </div>
 
@@ -57,12 +67,60 @@ const THEMES = ["Light", "Dark", "System"]
       opacity: 1;
     }
   }
+
+  /* Animation for "No" when sun is selected */
+  .no-theme-rectangle {
+    width: 50px;
+    height: 50px;
+    background-color: #ffcc00; /* Sun-like color */
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 8px;
+    animation: shake 1s ease-in-out infinite, showText 1s forwards;
+    font-size: 1.25rem;
+  }
+
+  /* Animation to shake the rectangle */
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+  }
+
+  /* Animation for showing text */
+  @keyframes showText {
+    0% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* OK Button Style */
+  .ok-button {
+    width: 100%;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+
+  .ok-button:hover {
+    background-color: #4a90e2;
+  }
 </style>
 
 <script is:inline>
   let remove = null
   const matchMedia = window.matchMedia("(prefers-color-scheme: dark)")
   const themesMenu = document.getElementById("themes-menu")
+  const okButton = document.getElementById("ok-btn")
 
   const getThemePreference = () => {
     if (typeof localStorage !== "undefined") {
@@ -96,6 +154,16 @@ const THEMES = ["Light", "Dark", "System"]
 
     updateIcon(themePreference)
     document.documentElement.classList[isDark ? "add" : "remove"]("dark")
+
+    // Update the current theme variable when theme changes
+    currentTheme = themePreference;
+
+    // Display OK button only when "No" is shown (i.e. when Light theme is selected)
+    if (currentTheme === "light") {
+      okButton.classList.remove("hidden");
+    } else {
+      okButton.classList.add("hidden");
+    }
   }
 
   updateTheme()
@@ -108,15 +176,9 @@ const THEMES = ["Light", "Dark", "System"]
     themesMenu.classList[isClosed ? "add" : "remove"]("open")
   })
 
-  document.querySelectorAll(".themes-menu-option").forEach((element) => {
-    element.addEventListener("click", (e) => {
-      localStorage.setItem("theme", e.target.innerText.toLowerCase().trim())
-      updateTheme()
-    })
-  })
-
-  document.addEventListener('astro:after-swap', () => {
-    updateTheme();
-    window.scrollTo({ left: 0, top: 0, behavior: 'instant' });
+  // Handle the OK button click event
+  okButton.addEventListener("click", () => {
+    // Redirect to the main page (replace with actual redirection logic)
+    window.location.href = "/"; // or use routing logic if in a SPA
   })
 </script>
