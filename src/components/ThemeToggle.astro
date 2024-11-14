@@ -3,8 +3,9 @@ import SunIcon from "./icons/Sun.astro"
 import MoonIcon from "./icons/Moon.astro"
 import SystemIcon from "./icons/System.astro"
 
-const THEMES = ["Light", "Dark", "System"]
-let currentTheme = "dark"; // Default theme is set to "dark"
+// Default theme is set to dark
+let currentTheme = "dark";
+const THEMES = ["Light", "Dark", "System"];
 ---
 
 <div class="relative ml-1 mr-1">
@@ -109,6 +110,9 @@ let currentTheme = "dark"; // Default theme is set to "dark"
   const okButton = document.getElementById("ok-btn");
   const themesMenu = document.getElementById("themes-menu");
   const themeToggleButton = document.getElementById("theme-toggle-btn");
+
+  // Define default theme if necessary
+  let currentTheme = "dark"; // Default theme is dark
 
   if (okButton && themesMenu && themeToggleButton) {
     // Check if currentTheme is "light", then show the OK button
