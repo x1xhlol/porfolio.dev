@@ -61,8 +61,8 @@ const PROJECTS = [
 
         <div class="flex flex-wrap mt-2">
           <ul class="flex flex-row mb-2 gap-x-2">
-            {tags && tags.map((tag) => (
-              <li class="flex gap-x-2 rounded-full text-xs py-1 px-2" key={tag.name}>
+            {tags && tags.map((tag, index) => (
+              <li class="flex gap-x-2 rounded-full text-xs py-1 px-2" key={index}>
                 <tag.icon class="size-4" />
                 {tag.name}
               </li>
@@ -80,4 +80,5 @@ const PROJECTS = [
     </article>
   ))}
 </div>
+
 
