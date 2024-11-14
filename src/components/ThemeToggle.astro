@@ -2,7 +2,6 @@
 import SunIcon from "./icons/Sun.astro"
 import MoonIcon from "./icons/Moon.astro"
 
-// Default theme set to dark
 const THEMES = ["Light", "Dark"]
 ---
 
@@ -35,10 +34,9 @@ const THEMES = ["Light", "Dark"]
     </ul>
   </div>
 
-  <!-- No message for Sun theme -->
   <div id="no-message" class="no-message hidden">
     <div class="no-message-content p-6 bg-gray-700 text-white rounded-lg shadow-lg">
-      <p class="text-lg">¡No! El modo Sol (Light) es un desastre 😂</p>
+      <p class="text-lg">No, el modo Light es para gente que quiere quedarse ciega 😠</p>
       <button id="no-message-close" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Ok</button>
     </div>
   </div>
@@ -62,18 +60,17 @@ const THEMES = ["Light", "Dark"]
     }
   }
 
-  /* No Message Styling */
   .no-message {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4); /* Slightly dark background */
+    background-color: rgba(0, 0, 0, 0.4);
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Ensures the message is above everything */
+    z-index: 9999;
     animation: fadeIn 0.3s ease-out;
   }
 
@@ -82,10 +79,10 @@ const THEMES = ["Light", "Dark"]
     width: 80%;
     text-align: center;
     padding: 20px;
-    background-color: #333; /* Dark background to make the text visible */
+    background-color: #333;
     border-radius: 8px;
     animation: pop-up 0.3s ease-out;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); /* Adds shadow to the message */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
   }
 
   .no-message.hidden {
@@ -114,6 +111,19 @@ const THEMES = ["Light", "Dark"]
       transform: scale(1);
       opacity: 1;
     }
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .no-message.fade-out {
+    animation: fadeOut 0.3s ease-out forwards;
   }
 </style>
 
@@ -167,27 +177,22 @@ const THEMES = ["Light", "Dark"]
     themesMenu.classList[isClosed ? "add" : "remove"]("open")
   })
 
-  document.querySelectorAll(".themes-menu-option").forEach((element) => {
-    element.addEventListener("click", (e) => {
-      const selectedTheme = e.target.innerText.toLowerCase().trim()
+  document.querySelectorAll(".themes-menu-option").forEach((option) => {
+    option.addEventListener("click", () => {
+      const selectedTheme = option.innerText.toLowerCase()
+      localStorage.setItem("theme", selectedTheme)
+      updateTheme()
+
       if (selectedTheme === "light") {
-        // Display the "No" message when selecting Light mode
-        noMessage.classList.remove("hidden")
         noMessage.classList.add("visible")
-      } else {
-        localStorage.setItem("theme", selectedTheme)
-        updateTheme()
       }
     })
   })
 
   noMessageClose.addEventListener("click", () => {
-    noMessage.classList.remove("visible")
-    noMessage.classList.add("hidden")
-  })
-
-  document.addEventListener('astro:after-swap', () => {
-    updateTheme();
-    window.scrollTo({ left: 0, top: 0, behavior: 'instant' });
+    noMessage.classList.add("fade-out")
+    setTimeout(() => {
+      noMessage.classList.remove("visible", "fade-out")
+    }, 300)
   })
 </script>
