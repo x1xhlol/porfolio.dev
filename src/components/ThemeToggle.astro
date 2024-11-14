@@ -36,9 +36,11 @@ const THEMES = ["Light", "Dark"]
   </div>
 
   <!-- Pop-up Notification -->
-  <div id="popup" class="popup hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 bg-gray-700 text-white rounded-lg shadow-lg">
-    <p class="text-lg">¡No! El modo Sol (Light) es un desastre 😂</p>
-    <button id="popup-close" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Ok</button>
+  <div id="popup" class="popup hidden">
+    <div class="popup-content p-6 bg-gray-700 text-white rounded-lg shadow-lg">
+      <p class="text-lg">No. El modo Light es para gente ciega</p>
+      <button id="popup-close" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Ok</button>
+    </div>
   </div>
 </div>
 
@@ -62,19 +64,24 @@ const THEMES = ["Light", "Dark"]
 
   /* Pop-up Styling */
   .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
     display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
     animation: fadeIn 0.3s ease-out;
   }
 
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .popup-content {
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    animation: pop-up 0.3s ease-out;
   }
 
   .popup.hidden {
@@ -82,7 +89,32 @@ const THEMES = ["Light", "Dark"]
   }
 
   .popup.visible {
-    display: block;
+    display: flex;
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes pop-up {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* Adding a slight blur effect to the background */
+  body.blur {
+    filter: blur(4px);
   }
 </style>
 
@@ -143,6 +175,7 @@ const THEMES = ["Light", "Dark"]
         // Display the "No" pop-up when selecting Light mode
         popup.classList.remove("hidden")
         popup.classList.add("visible")
+        document.body.classList.add("blur") // Add blur effect to the background
       } else {
         localStorage.setItem("theme", selectedTheme)
         updateTheme()
@@ -153,6 +186,7 @@ const THEMES = ["Light", "Dark"]
   popupClose.addEventListener("click", () => {
     popup.classList.remove("visible")
     popup.classList.add("hidden")
+    document.body.classList.remove("blur") // Remove blur effect when the pop-up is closed
   })
 
   document.addEventListener('astro:after-swap', () => {
