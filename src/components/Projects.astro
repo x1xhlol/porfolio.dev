@@ -16,24 +16,27 @@ const TAGS = {
     class: "bg-[#003159] text-white",
     icon: Tailwind,
   },
+  CSS: {
+    name: "CSS",
+    class: "bg-[#003159] text-white",
+    icon: CSS,
+  }
 }
 const PROJECTS = [
   {
-    title: "SVGL - A beautiful library with SVG logos",
+    title: "The AI Museum - El primer museo de arte IA",
     description:
-      "Biblioteca de logos SVG de las marcas más populares. +10k visitas al mes. +2K svgs descargados. Creado desde cero con Next.js, React y Tailwind CSS.",
-    link: "https://svgl.vercel.app/",
-    github: "https://github.com/pheralb/svgl",
-    image: "/projects/svgl.webp",
-    tags: [TAGS.NEXT, TAGS.TAILWIND],
+      "TheAIMuseum es un museo virtual que creé y desarrollé desde cero, dedicado exclusivamente a exponer arte generado con inteligencia artificial. Es mi primer proyecto, e intenté buscar una experiencia visual inmersiva y moderna.",
+    link: "https://theaimuseum.tech",
+    image: "/projects/theaimuseum.webp",
   },
   {
-    title: "AdventJS - Retos de programación con JavaScript y TypeScript",
+    title: "Leafly - Riego automatizado para plantas",
     description:
-      "Plataforma gratuita con retos de programación. Más de 1 millón de visitas en un mes. +50K retos completados. Creada desde cero con Next.js, React y Tailwind CSS.",
-    link: "https://adventjs.dev",
-    image: "/projects/adventjs.webp",
-    tags: [TAGS.NEXT, TAGS.TAILWIND],
+      "Leafly es un proyecto en progreso que automatiza el riego de plantas. Desarrollado para regar exactamente cuando y cuanto es necesario, optimizando el cuidado de plantas de manera totalmente automática. Está en desarrollo el funcionamiento y la conectividad entre las macetas y la Dashboard.",
+    link: "https://leafly.tech",
+    image: "/projects/leafly.webp",
+    tags: [TAGS.NEXT, TAGS.CSS],
   },
 ]
 ---
@@ -44,7 +47,7 @@ const PROJECTS = [
     <article class="flex flex-col space-x-0 space-y-8 group md:flex-row md:space-x-8 md:space-y-0">
   <div class="w-full md:w-1/2">
     <div class="relative flex flex-col items-center col-span-6 row-span-5 gap-8 transition duration-500 ease-in-out transform shadow-xl overflow-clip rounded-xl sm:rounded-xl md:group-hover:-translate-y-1 md:group-hover:shadow-2xl lg:border lg:border-gray-800 lg:hover:border-gray-700 lg:hover:bg-gray-800/50">
-      <img alt="Recién llegado vs 5 años en Nueva Zelanda" class="object-cover object-top w-full h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105" loading="lazy" src={image} />
+      <img alt="Proyectos a 14/11/2024" class="object-cover object-top w-full h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105" loading="lazy" src={image} />
     </div>
   </div>
 
