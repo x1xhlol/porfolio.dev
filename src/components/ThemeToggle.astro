@@ -2,7 +2,7 @@
 import SunIcon from "./icons/Sun.astro"
 import MoonIcon from "./icons/Moon.astro"
 
-// Set default theme to dark
+// Default theme set to dark
 const THEMES = ["Light", "Dark"]
 ---
 
@@ -34,6 +34,12 @@ const THEMES = ["Light", "Dark"]
       }
     </ul>
   </div>
+
+  <!-- Pop-up Notification -->
+  <div id="popup" class="popup hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 bg-gray-700 text-white rounded-lg shadow-lg">
+    <p class="text-lg">¡No! El modo Sol (Light) es un desastre 😂</p>
+    <button id="popup-close" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Ok</button>
+  </div>
 </div>
 
 <style>
@@ -53,12 +59,39 @@ const THEMES = ["Light", "Dark"]
       opacity: 1;
     }
   }
+
+  /* Pop-up Styling */
+  .popup {
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .popup.hidden {
+    display: none;
+  }
+
+  .popup.visible {
+    display: block;
+  }
 </style>
 
 <script is:inline>
   let remove = null
   const matchMedia = window.matchMedia("(prefers-color-scheme: dark)")
   const themesMenu = document.getElementById("themes-menu")
+  const popup = document.getElementById("popup")
+  const popupClose = document.getElementById("popup-close")
 
   const getThemePreference = () => {
     if (typeof localStorage !== "undefined") {
@@ -89,6 +122,7 @@ const THEMES = ["Light", "Dark"]
       (themePreference === "system" && matchMedia.matches)
 
     updateIcon(themePreference)
+
     document.documentElement.classList[isDark ? "add" : "remove"]("dark")
   }
 
@@ -104,9 +138,21 @@ const THEMES = ["Light", "Dark"]
 
   document.querySelectorAll(".themes-menu-option").forEach((element) => {
     element.addEventListener("click", (e) => {
-      localStorage.setItem("theme", e.target.innerText.toLowerCase().trim())
-      updateTheme()
+      const selectedTheme = e.target.innerText.toLowerCase().trim()
+      if (selectedTheme === "light") {
+        // Display the "No" pop-up when selecting Light mode
+        popup.classList.remove("hidden")
+        popup.classList.add("visible")
+      } else {
+        localStorage.setItem("theme", selectedTheme)
+        updateTheme()
+      }
     })
+  })
+
+  popupClose.addEventListener("click", () => {
+    popup.classList.remove("visible")
+    popup.classList.add("hidden")
   })
 
   document.addEventListener('astro:after-swap', () => {
