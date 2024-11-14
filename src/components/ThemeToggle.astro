@@ -38,7 +38,7 @@ const THEMES = ["Light", "Dark"]
   <!-- Pop-up Notification -->
   <div id="popup" class="popup hidden">
     <div class="popup-content p-6 bg-gray-700 text-white rounded-lg shadow-lg">
-      <p class="text-lg">No. El modo Light es para gente ciega</p>
+      <p class="text-lg">¡No! El modo Sol (Light) es un desastre 😂</p>
       <button id="popup-close" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Ok</button>
     </div>
   </div>
@@ -73,7 +73,7 @@ const THEMES = ["Light", "Dark"]
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 9999; /* Ensures the popup is above the content */
     animation: fadeIn 0.3s ease-out;
   }
 
@@ -81,7 +81,11 @@ const THEMES = ["Light", "Dark"]
     max-width: 400px;
     width: 80%;
     text-align: center;
+    padding: 20px;
+    background-color: #333; /* Dark background to make the text visible */
+    border-radius: 8px;
     animation: pop-up 0.3s ease-out;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); /* Adds shadow to the popup */
   }
 
   .popup.hidden {
@@ -115,6 +119,11 @@ const THEMES = ["Light", "Dark"]
   /* Adding a slight blur effect to the background */
   body.blur {
     filter: blur(4px);
+  }
+
+  /* Adjusting transition for better performance */
+  .transition-all {
+    transition: all 0.3s ease;
   }
 </style>
 
