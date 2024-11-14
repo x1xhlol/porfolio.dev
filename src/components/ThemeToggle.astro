@@ -180,8 +180,6 @@ const THEMES = ["Light", "Dark"]
   document.querySelectorAll(".themes-menu-option").forEach((option) => {
     option.addEventListener("click", () => {
       const selectedTheme = option.innerText.toLowerCase()
-      localStorage.setItem("theme", selectedTheme)
-      updateTheme()
 
       if (selectedTheme === "light") {
         noMessage.classList.add("visible")
